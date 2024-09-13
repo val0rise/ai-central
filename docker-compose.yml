@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  ai-central:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongodb:27017/ai-central-db
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+
+services:
+  ai-central:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env  # Docker Compose will load environment variables from this file
+    depends_on:
+      - mongodb
