@@ -1,13 +1,19 @@
 version: '3.8'
 
+
+
 services:
-  ai-central:
-    build: .
+  client:
+    build: ./src/client
     ports:
-      - "3000:3000"
+      - "3000:3000"  # This should map the local port 3000 to the container's port 3000
+    volumes:
+      - ./src/client:/usr/src/app
     environment:
       - NODE_ENV=development
       - MONGODB_URI=mongodb://mongodb:27017/ai-central-db
+    env_file:
+      - .env  # Docker Compose will load environment variables from this file
     depends_on:
       - mongodb
 
@@ -20,13 +26,3 @@ services:
 
 volumes:
   mongodb_data:
-
-services:
-  ai-central:
-    build: .
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env  # Docker Compose will load environment variables from this file
-    depends_on:
-      - mongodb
